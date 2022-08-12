@@ -14,15 +14,27 @@ public class PersonController {
         this.service = service;
     }
 
-    //    POST /people -- create a person
+    // POST /people - create person
     @PostMapping("/people")
     public ResponseEntity<Person> createPerson(@RequestBody Person person) {
         return new ResponseEntity<>(service.add(person), HttpStatus.CREATED);
     }
 
-    //    GET /people/{id} -- get the person with the specified ID
+    // PUT /people - update person
+    @PutMapping("/people/{id}")
+    public ResponseEntity<Person> updatePerson(@RequestBody Person person, @PathVariable Integer id) {
+        return new ResponseEntity<>(service.update(person, id), HttpStatus.OK);
+    }
+
+    // GET /people/{id} - get person by ID
     @GetMapping("/people/{id}")
     public ResponseEntity<Person> getPerson(@PathVariable Integer id){
         return new ResponseEntity<>(service.getById(id),HttpStatus.OK);
+    }
+
+    // DELETE /people/{id} - delete person with given id
+    @DeleteMapping("/people/{id}")
+    public ResponseEntity<Boolean> deletePerson(@PathVariable Integer id) {
+        return new ResponseEntity<>(service.remove(id),HttpStatus.OK);
     }
 }
