@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 public class PersonController {
     private final PersonService personService;
@@ -54,5 +56,11 @@ public class PersonController {
     @GetMapping("/people/surname/{lastName}")
     public ResponseEntity<Iterable<Person>> getPeopleByLastName(@PathVariable String lastName) {
         return new ResponseEntity<>(personService.getPeopleByLastName(lastName), HttpStatus.OK);
+    }
+
+    // GET /people/firstname/stats
+    @GetMapping("/people/firstname/stats")
+    public ResponseEntity<Map<String, Integer>> getFirstNameFreq() {
+        return new ResponseEntity<>(personService.getFirstNameFrequencies(), HttpStatus.OK);
     }
 }

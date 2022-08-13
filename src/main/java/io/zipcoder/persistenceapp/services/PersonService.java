@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
@@ -44,14 +46,23 @@ public class PersonService {
     }
 
     public Person getByPhoneNumber(String phoneNumber) {
-        Iterable<Person> personIterable = getPeople();
-        for (Person p : personIterable) {
-            if (p.getMobile().equals(phoneNumber)) return p;
-        }
-        return null;
+        return repository.findPersonByPhoneNumber(phoneNumber);
     }
 
     public Iterable<Person> getPeopleByLastName(String lastName) {
         return repository.findAllByLastName(lastName);
+    }
+
+    public Map<String, Integer> getFirstNameFrequencies() {
+        Iterable<Person> personIterable = repository.findAll();
+        Map<String, Integer> freqMap = new HashMap<>();
+        for (Person p : personIterable) {
+            if (freqMap.containsKey(p.getFirstName())) {
+                freqMap.put(p.getFirstName(), 1 + freqMap.get(p.getFirstName()));
+            } else {
+                freqMap.put(p.getFirstName(), 1);
+            }
+        }
+        return freqMap;
     }
 }

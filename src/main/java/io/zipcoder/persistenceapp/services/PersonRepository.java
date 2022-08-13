@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PersonRepository extends CrudRepository<Person,Integer> {
+    @Query ("SELECT p FROM Person p WHERE p.mobile = :phoneNumber")
+    Person findPersonByPhoneNumber(@Param("phoneNumber") String phoneNumber);
     @Query ("SELECT p FROM Person p WHERE p.lastName = :surname")
     Iterable<Person> findAllByLastName(@Param("surname") String lastName);
 }
