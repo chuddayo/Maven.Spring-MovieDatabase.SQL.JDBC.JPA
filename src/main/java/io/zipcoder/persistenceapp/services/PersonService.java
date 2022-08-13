@@ -4,6 +4,8 @@ import io.zipcoder.persistenceapp.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 
 @Service
 public class PersonService {
@@ -35,5 +37,21 @@ public class PersonService {
     public Boolean remove(Integer id) {
         repository.delete(id);
         return true;
+    }
+
+    public Iterable<Person> getPeople() {
+        return repository.findAll();
+    }
+
+    public Person getByPhoneNumber(String phoneNumber) {
+        Iterable<Person> personIterable = getPeople();
+        for (Person p : personIterable) {
+            if (p.getMobile().equals(phoneNumber)) return p;
+        }
+        return null;
+    }
+
+    public Iterable<Person> getPeopleByLastName(String lastName) {
+        return repository.findAllByLastName(lastName);
     }
 }
